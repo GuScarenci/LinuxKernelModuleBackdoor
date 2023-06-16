@@ -1,5 +1,7 @@
 import socket
 
+#teste
+
 def start_server():
     # Create a TCP socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
