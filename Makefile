@@ -18,7 +18,7 @@ CCPP = g++
 
 
 all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(CURDIR) modules 
+	make --debug -C /lib/modules/$(shell uname -r)/build M=$(CURDIR) modules 
 
 clean:
 	@rm -f $(ZIPFILE)
