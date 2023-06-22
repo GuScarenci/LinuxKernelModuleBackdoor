@@ -17,7 +17,8 @@ CCPP = g++
 .PHONY: all clean zip run debug gdb valgrind
 
 
-all: $(EXECUTABLE)
+all:
+	make -C /lib/modules/$(shell uname -r)/build M=$(CURDIR) modules 
 
 clean:
 	@rm -f $(ZIPFILE)
