@@ -9,7 +9,7 @@ CFILES      = $(shell find src/ -type f |grep '\.c')
 CPPFILES    = $(shell find src/ -type f |grep '\.cpp$$')
 OFILES      = $(patsubst src/%.c,build/obj/%.o, $(CFILES))
 OFILES     += $(patsubst src/%.cpp,build/obj/%.o, $(CPPFILES))
-PWD = $(CURDIR)/src
+SOURCE_FILES = $(CURDIR)/src
 
 CC   = gcc
 CCPP = g++
@@ -18,12 +18,12 @@ CCPP = g++
 
 
 all:
-	make --debug -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules 
+	make --debug -C /lib/modules/$(shell uname -r)/build M=$(SOURCE_FILES) modules 
 
 clean:
 	@rm -f $(ZIPFILE)
 	@rm -rf build/
-	make --debug -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+	make --debug -C /lib/modules/$(shell uname -r)/build M=$(SOURCE_FILES) clean
 
 zip: clean
 	7za a $(ZIPFILE) ./*
