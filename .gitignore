@@ -3,3 +3,8 @@
 
 # Ignore files from build directory
 build/*
+
+# Ignore Kernel module stuff
+*.order
+*.symvers
+*.cmd

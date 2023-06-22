@@ -1,6 +1,6 @@
 KDIR       ?= /lib/modules/$(shell uname -r)/build
 CC          = gcc
-SOURCE_DIR  = $(CURDIR)/src
+SOURCE_DIR  = $(CURDIR)
 
 .PHONY: all clean module insert remove
 
