@@ -1,6 +1,8 @@
-KDIR       ?= /lib/modules/$(shell uname -r)/build
-CC          = gcc
-SOURCE_DIR  = $(CURDIR)/src
+KDIR        ?= /lib/modules/$(shell uname -r)/build
+CC           = gcc
+SOURCE_DIR   = $(CURDIR)/src
+SOURCE_FILES = $(shell find src/ -type f |grep '\.c')
+obj-m       += $(patsubs %.c, %.o, $(SOURCE_FILES))
 
 .PHONY: all clean module insert remove
 
