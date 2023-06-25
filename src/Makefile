@@ -1,19 +1,5 @@
-KDIR       ?= /lib/modules/$(shell uname -r)/build
-CC          = gcc
-SOURCE_DIR  = $(CURDIR)
-
-.PHONY: all clean module insert remove
-
-all: module
-
-insert:
-	sudo insmod src/backdoor.ko
-
-remove:
-	sudo rmmod src/backdoor.ko
-
+obj-m = hello.o
+all:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) modules
 clean:
-	$(MAKE) --debug -C $(KDIR) M=$(SOURCE_DIR) clean
-
-module:
-	$(MAKE) --debug CC=$(CC) -C $(KDIR) M=$(SOURCE_DIR) modules
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean`
