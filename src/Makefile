@@ -1,4 +1,4 @@
-obj-m = init_module.o
+obj-m = backdoor.o
 all:
 	make -C /lib/modules/$(shell uname -r)/build/ M=$(CURDIR) modules
 clean:
