@@ -1,11 +1,9 @@
 KDIR        ?= /lib/modules/$(shell uname -r)/build
 CC           = gcc
-MODULE_NAME  = code
+MODULE_NAME  = backdoor
 
 SOURCE_DIR   = $(CURDIR)/src
-REP_DIR      = $(CURDIR)
 MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
-SOURCE_FILES = $(shell find src/ -type f |grep '\.c')
 obj-m       += MODULE_NAME.o
 
 .PHONY: all clean module insert remove

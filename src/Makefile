@@ -1,6 +1,6 @@
 KDIR        ?= /lib/modules/$(shell uname -r)/build
 CC           = gcc
-MODULE_NAME  = code
+MODULE_NAME  = backdoor
 
 SOURCE_DIR   = $(CURDIR)
 MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko

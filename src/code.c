@@ -18,3 +18,5 @@ static void segmentsDisplay_exit(void)
 
 module_init(segmentsDisplay_init);
 module_exit(segmentsDisplay_exit);
+
+
