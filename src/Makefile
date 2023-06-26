@@ -1,7 +1,23 @@
-SOURCE_FILES = $(shell find src/ -type f |grep '\.c')
-obj-m       += $(patsubs %.c, %.o, $(SOURCE_FILES))
+KDIR        ?= /lib/modules/$(shell uname -r)/build
+CC           = gcc
+MODULE_NAME  = code
 
-all:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(CURDIR) modules
+SOURCE_DIR   = $(CURDIR)
+MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
+obj-m       += $(MODULE_NAME).o
+
+.PHONY: all clean module insert remove
+
+all: module
+
+insert:
+	sudo insmod $(MODULE_PATH)
+
+remove:
+	sudo rmmod $(MODULE_PATH)
+
 clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(CURDIR) clean`
+	sudo $(MAKE) --debug -C $(KDIR) M=$(SOURCE_DIR) clean
+
+module:
+	sudo $(MAKE) --debug CC=$(CC) -C $(KDIR) M=$(SOURCE_DIR) modules
