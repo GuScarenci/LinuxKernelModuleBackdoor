@@ -26,7 +26,7 @@ static int __init hello_init(void)
     // Set the destination IP address and port
     memset(&addr, 0, sizeof(struct sockaddr_in));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(12345);  // Set the desired port number
+    addr.sin_port = htons(9090);  // Set the desired port number
     if (inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr) <= 0) {  // Set the desired IP address
         printk(KERN_ERR "Invalid address\n");
         sock_release(sock);
