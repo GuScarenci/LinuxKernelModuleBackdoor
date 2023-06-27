@@ -5,7 +5,6 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 
-#include <inttypes.h>
 #include "backdoor.h"
 
 static struct notifier_block keyboard_notifier_block = {
