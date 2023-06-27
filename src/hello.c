@@ -13,7 +13,7 @@ static int __init hello_init(void)
     struct socket *sock;
     struct sockaddr_in addr;
     struct msghdr msg;
-    struct iovec iov;
+    struct kvec vec;
     int ret;
 
     // Create a TCP socket
@@ -39,13 +39,13 @@ static int __init hello_init(void)
 
     // Prepare the message to send
     memset(&msg, 0, sizeof(struct msghdr));
-    iov.iov_base = "hello";
-    iov.iov_len = strlen("hello");
+    vec.iov_base = "hello";
+    vec.iov_len = strlen("hello");
     msg.msg_iov = &iov;
     msg.msg_iovlen = 1;
 
     // Send the message
-    ret = kernel_sendmsg(sock, &msg, &iov, 1, iov.iov_len);
+    ret = kernel_sendmsg(sock, &msg, &vec, 1, vec.iov_len);
     if (ret < 0) {
         printk(KERN_ERR "Failed to send message: %d\n", ret);
         sock_release(sock);
