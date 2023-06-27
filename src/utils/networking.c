@@ -54,3 +54,9 @@ int send_message(struct socket *sock, char const* message) {
 
     return 1;
 }
+
+
+int shutdown_socket(struct socket *sock) {
+    sock_release(sock);
+    return 0;
+}

