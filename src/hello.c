@@ -17,7 +17,7 @@ static int __init hello_init(void)
     int ret;
 
     // Create a TCP socket
-    ret = sock_create_kern(AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
+    ret = sock_create_kern(&init_net, AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
     if (ret < 0) {
         printk(KERN_ERR "Failed to create socket: %d\n", ret);
         return ret;
@@ -58,9 +58,7 @@ static int __init hello_init(void)
 
     // Close the socket
     sock_release(sock);
-
     printk(KERN_INFO "Message sent successfully\n");
-
     return 0;
 }
 
