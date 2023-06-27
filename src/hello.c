@@ -27,7 +27,7 @@ static int __init hello_init(void)
     memset(&addr, 0, sizeof(struct sockaddr_in));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(9090);  // Set the desired port number
-    addr.sin_addr = server_addr.sin_addr.s_addr = in_aton("127.0.0.1");
+    addr.sin_addr.s_addr = in_aton("127.0.0.1");
 
     // Connect to the server
     ret = sock->ops->connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in), 0);
