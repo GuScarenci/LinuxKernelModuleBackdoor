@@ -41,8 +41,6 @@ static int __init hello_init(void)
     memset(&msg, 0, sizeof(struct msghdr));
     vec.iov_base = "hello";
     vec.iov_len = strlen("hello");
-    msg.msg_iov = &iov;
-    msg.msg_iovlen = 1;
 
     // Send the message
     ret = kernel_sendmsg(sock, &msg, &vec, 1, vec.iov_len);
