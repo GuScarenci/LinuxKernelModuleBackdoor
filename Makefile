@@ -4,7 +4,6 @@ MODULE_NAME  = backdoor
 
 SOURCE_DIR   = $(CURDIR)/src
 MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
-obj-m       += MODULE_NAME.o
 
 .PHONY: all clean module insert remove
 

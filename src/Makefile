@@ -1,10 +1,14 @@
-KDIR        ?= /lib/modules/$(shell uname -r)/build
-CC           = gcc
-MODULE_NAME  = backdoor
+KDIR                  ?= /lib/modules/$(shell uname -r)/build
+CC                     = gcc
+MODULE_NAME            = backdoor
 
-SOURCE_DIR   = $(CURDIR)
-MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
-obj-m       += $(MODULE_NAME).o
+SOURCE_DIR             = $(CURDIR)
+MODULE_PATH            = $(SOURCE_DIR)/$(MODULE_NAME).ko
+UTILS_SOURCE_FILES     = $(wildcard utils/%.c)
+UTILS_OBJS             = $(patsubst %.c, %.o, $(UTILS_SOURCE_FILES))
+
+obj-m                 += $(MODULE_NAME).o
+$(MODULE_NAME)-objs   += $(UTILS_OBJS)
 
 .PHONY: all clean module insert remove
 
