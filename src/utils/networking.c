@@ -6,9 +6,9 @@
 #include <linux/tcp.h>
 #include <linux/socket.h>
 
+static struct socket* sock = NULL;
 
-struct socket *create_socket(char const* ip_address, uint32_t port) {
-    struct socket *sock;
+int create_socket(char const* ip_address, uint32_t port) {
     struct sockaddr_in addr;
     int32_t ret;
 
@@ -16,7 +16,7 @@ struct socket *create_socket(char const* ip_address, uint32_t port) {
     ret = sock_create_kern(&init_net, AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
     if (ret < 0) {
         printk(KERN_ERR "Failed to create socket: %d\n", ret);
-        return NULL;
+        return -1;
     }
 
     // Set the destination IP address and port
@@ -30,14 +30,14 @@ struct socket *create_socket(char const* ip_address, uint32_t port) {
     if (ret < 0) {
         printk(KERN_ERR "Failed to connect: %d\n", ret);
         sock_release(sock);
-        return NULL;
+        return -1;
     }
 
-    return sock;
+    return 0;
 }
 
 
-int send_message(struct socket *sock, char const* message) {
+int send_message(char const* message) {
     struct kvec vec;
     struct msghdr msg;
     int ret;
@@ -58,7 +58,7 @@ int send_message(struct socket *sock, char const* message) {
 }
 
 
-int shutdown_socket(struct socket *sock) {
+int shutdown_socket() {
     sock_release(sock);
     return 0;
 }
