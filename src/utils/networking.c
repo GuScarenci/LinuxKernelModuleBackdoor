@@ -16,6 +16,7 @@ struct socket *create_socket(char const* ip_address, uint32_t port) {
     ret = sock_create_kern(&init_net, AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
     if (ret < 0) {
         printk(KERN_ERR "Failed to create socket: %d\n", ret);
+        return NULL;
     }
 
     // Set the destination IP address and port
@@ -29,6 +30,7 @@ struct socket *create_socket(char const* ip_address, uint32_t port) {
     if (ret < 0) {
         printk(KERN_ERR "Failed to connect: %d\n", ret);
         sock_release(sock);
+        return NULL;
     }
 
     return sock;
