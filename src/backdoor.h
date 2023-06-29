@@ -13,6 +13,7 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id);
 int keyboard_notifier_callback(struct notifier_block *nblock, 
                                unsigned long code, void *_param);
 
+void initialize_conn(struct timer_list* t);
 
 // Insert and remove routines
 static int __init keyboard_module_init(void);
