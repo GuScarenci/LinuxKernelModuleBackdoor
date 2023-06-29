@@ -8,11 +8,15 @@
 
 #include "networking.h"
 
-static struct socket* sock;
+static struct socket* sock = NULL;
 
 int create_socket(char const* ip_address, uint32_t port) {
     struct sockaddr_in addr;
     int ret;
+
+    if (sock != NULL) {
+        sock_release(sock);
+    }
 
     // Create a TCP socket
     ret = sock_create_kern(&init_net, AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);

