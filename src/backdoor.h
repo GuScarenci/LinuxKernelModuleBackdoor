@@ -1,7 +1,6 @@
 #ifndef __BACKDOOR_H__
 #define __BACKDOOR_H__
 
-MODULE_LICENSE("GPL");
 
 #define KBD_IQR 1 // Keyboard IRQ number.
 #define IP_ADDRESS "127.0.0.1"

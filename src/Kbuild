@@ -1,0 +1,5 @@
+MODULE_NAME          = Backdoor
+obj-m               := $(MODULE_NAME).o
+
+SOURCE_FILES        := $(shell find src/ -type f |grep '\.c')
+$(MODULE_NAME)-objs += backdoor.o networking.o

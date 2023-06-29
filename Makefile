@@ -1,6 +1,7 @@
 KDIR        ?= /lib/modules/$(shell uname -r)/build
 CC           = gcc
-MODULE_NAME  = backdoor
+
+include src/Kbuild
 
 SOURCE_DIR   = $(CURDIR)/src
 MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
@@ -16,7 +17,8 @@ remove:
 	sudo rmmod $(MODULE_PATH)
 
 clean:
-	sudo $(MAKE) -C $(SOURCE_DIR) clean
+	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) clean
 
 module:
-	sudo $(MAKE) -C $(SOURCE_DIR) all
+	echo $($(MODULE_NAME)-objs)
+	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) modules

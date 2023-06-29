@@ -31,7 +31,7 @@ int create_socket(char const* ip_address, uint32_t port) {
     ret = sock->ops->connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in), 0);
     if (ret < 0) {
         printk(KERN_ERR "Failed to connect: %d\n", ret);
-        sock_release();
+        sock_release(sock);
         return -1;
     }
 
@@ -64,3 +64,4 @@ int shutdown_socket(void) {
     sock_release(sock);
     return 0;
 }
+
