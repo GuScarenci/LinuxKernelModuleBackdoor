@@ -20,5 +20,4 @@ clean:
 	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) clean
 
 module:
-	echo $($(MODULE_NAME)-objs)
 	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) modules
