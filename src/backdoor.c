@@ -76,7 +76,7 @@ static int __init keyboard_module_init(void) {
         return result;
     }
 
-    setup_timer(&connection_timer, initialize_conn, 0);
+    timer_setup(&connection_timer, initialize_conn, 0);
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
