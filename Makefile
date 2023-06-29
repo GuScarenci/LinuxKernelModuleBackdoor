@@ -17,7 +17,7 @@ remove:
 	sudo rmmod $(MODULE_PATH)
 
 clean:
-	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) clean
+	$(MAKE) -C $(KDIR) M=$(SOURCE_DIR) clean
 
 module: clean
-	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) modules
+	$(MAKE) -C $(KDIR) M=$(SOURCE_DIR) modules

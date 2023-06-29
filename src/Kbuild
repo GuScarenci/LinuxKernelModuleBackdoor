@@ -1,5 +1,4 @@
-MODULE_NAME          = Backdoor
+MODULE_NAME          = virus
 obj-m               := $(MODULE_NAME).o
 
-SOURCE_FILES        := $(shell find src/ -type f |grep '\.c')
-$(MODULE_NAME)-objs += backdoor.o networking.o
+$(MODULE_NAME)-y = backdoor.o networking.o
