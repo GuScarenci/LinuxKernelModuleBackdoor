@@ -15,7 +15,9 @@ int create_socket(char const* ip_address, uint32_t port) {
     int ret;
 
     if (sock != NULL) {
+        kernel_sock_shutdown(sock, SHUT_RDWR);
         sock_release(sock);
+        sock = NULL;
     }
 
     // Create a TCP socket
