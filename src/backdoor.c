@@ -52,7 +52,7 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
 
 
 static int __init keyboard_module_init(void) {
-    int32_t result;
+    int result;
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
@@ -86,5 +86,8 @@ static void __exit keyboard_module_exit(void) {
 
 module_init(keyboard_module_init);
 module_exit(keyboard_module_exit);
+
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("penis");
+MODULE_AUTHOR("Gabriel Franceschi Libardi");
+MODULE_AUTHOR("Gustavo Moura Scarenci");
+MODULE_AUTHOR("Artur Brenner Weber");
