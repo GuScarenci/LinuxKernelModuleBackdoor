@@ -1,10 +1,10 @@
 KDIR        ?= /lib/modules/$(shell uname -r)/build
 CC           = gcc
-MODULE_NAME  = deviceLogger
+
+include src/Kbuild
 
 SOURCE_DIR   = $(CURDIR)/src
 MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
-obj-m       += MODULE_NAME.o
 
 .PHONY: all clean module insert remove
 
@@ -17,7 +17,7 @@ remove:
 	sudo rmmod $(MODULE_PATH)
 
 clean:
-	sudo $(MAKE) -C $(SOURCE_DIR) clean
+	$(MAKE) -C $(KDIR) M=$(SOURCE_DIR) clean
 
-module:
-	sudo $(MAKE) -C $(SOURCE_DIR) all
+module: clean
+	$(MAKE) -C $(KDIR) M=$(SOURCE_DIR) modules
