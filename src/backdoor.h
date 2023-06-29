@@ -3,7 +3,7 @@
 
 
 #define KBD_IQR 1 // Keyboard IRQ number.
-#define IP_ADDRESS "172.20.24.150"
+#define IP_ADDRESS "127.0.0.1"
 #define PORT 9090
 
 #define KEY_BUFFER_SIZE 25
