@@ -19,5 +19,5 @@ remove:
 clean:
 	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) clean
 
-module:
+module: clean
 	sudo $(MAKE) -C $(KDIR) M=$(SOURCE_DIR) modules
