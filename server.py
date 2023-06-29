@@ -6,7 +6,7 @@ def start_server():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     # Set the server IP address and port
-    server_address = ('', 9095)  # Set the desired port number
+    server_address = ('', 9090)  # Set the desired port number
 
     # Bind the socket to the server address
     server_socket.bind(server_address)
