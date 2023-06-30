@@ -60,5 +60,3 @@ Em seguida, anexa o módulo ao Kernel da máquina monitorada digitando:
 
 Após a execução, quando quiser remover o módulo da máquina monitorada isto realiza-se pelo comando:
 `make remove`
-
-### feito por Artur Weber, Gabriel Libardi e Gustavo Scarenci 
