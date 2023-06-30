@@ -15,7 +15,8 @@ O código foi implementado com o kernel do sistema operacional Ubuntu 22.04.2 LT
 Os arquivos `deviceLogger.c`,  `keyboardLogger` e `??` e seus respectivos arquivos `.h` lidam com a coleta de dispositivos conectados, entradas de teclado e prints do sistema respectivamente. O arquivo `??` possui todas as principais operações de envio de mensagem via socket. Já o arquivo `backdoor.c` representa a parte principal do código, as operações de inicialização e finalização do módulo. Para construir o módulo, utiliza-se um `Makefile` na pasta raíz e um `Kbuild` na pasta `src`. Enquanto aquele realiza as operações principais de compilação, limpeza, inserção e remoção do módulo, este cuida de juntar os arquivos "objetos".
 
 ## Resultados 
-
+Atualmentem, funcionando, temos um devicelogger, que toda vez que o usuário conecta um dispositivo USB, isso dispara uma ação no kernel, que é captada pelo módulo, retornando a informação de fabricante, produto e número serial do dispositivo; um keylogger, que toda vez que uma tecla é apertada isso aciona uma interrupção que é capturada pelo módulo e adcionada em um buffer; um framelogger, que captura imagem do terminal; e um sistema de comunicação via socket, no qual o módulo kernel envia as informaçãos e um script em python é o servidor que as recebe.
+Usando a comunicação via socket, as informações do keylogger e do devicelogger são transmitidas pelo socket. As screenshots ainda não são transmitidas, além disso, também foi feito uma tentativa de coletar toda a tela, não somente a tela de terminal, com um código kernel que chama uma função para a captura de tela em user-space(gnome-screesnhot) mas que não foi levada adiante devido a quebra da proposta de apenas ficar no kernel-space.
 
 ## Orientações para Execução do Código
 Primeiramente, na máquina a ser monitorada, certifica-se de que esteja rodando a versão 22.04.2 LTS de Ubuntu, e que o interpretador de python 3 e o compilador gcc estejam instalados.
