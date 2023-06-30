@@ -1,6 +1,6 @@
 KDIR        ?= /lib/modules/$(shell uname -r)/build
 CC           = gcc
-MODULE_NAME  = screenshotFramebuffer
+MODULE_NAME  = moduleScreenshotUserSpace
 
 SOURCE_DIR   = $(CURDIR)
 MODULE_PATH  = $(SOURCE_DIR)/$(MODULE_NAME).ko
