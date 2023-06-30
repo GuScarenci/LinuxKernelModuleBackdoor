@@ -1,4 +1,5 @@
-# Trabalho para a disciplina SSC0640 - Sistemas Operacionais I 
+# Trabalho para a disciplina SSC0640 - Sistemas Operacionais I
+ 
 # LinuxKernelModuleBackdoor
 
 ## Integrantes:
@@ -7,7 +8,7 @@
 ### Nome: Gabriel Franceschi Libardi, nºUSP: 11760739
 ### Nome: Gustavo Moura Scarenci de Carvalho Ferreira, nºUSP: 12547792
 
-##Link:
+## Link:
 https://github.com/GuScarenci/LinuxKernelModuleBackdoor
 
 ## Instruções 
