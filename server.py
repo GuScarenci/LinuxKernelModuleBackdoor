@@ -2,7 +2,11 @@ import socket
 
 def hex_print(data):
     hex_data = ' '.join(hex(byte)[2:].zfill(2) for byte in data)
-    print(f"Received data (hexadecimal): {hex_data}")
+    hex_values = hex_data.split()
+    for hex_value in hex_values:
+        char = chr(int(hex_value, 16))
+        print(char, end = "")
+    print()
 
 def start_server():
     # Create a TCP/IP socket
