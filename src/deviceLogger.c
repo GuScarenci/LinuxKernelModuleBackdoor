@@ -2,17 +2,13 @@
 #include <linux/kernel.h>
 #include <linux/usb.h>
 
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Artur Weber");
-MODULE_DESCRIPTION("Device Monitoring Kernel Module");
+#include "deviceLogger.h"
 
 static int notify_device(struct notifier_block *self, unsigned long action, void *dev) {
     struct usb_device *usb_dev = (struct usb_device *)dev;
 
     if (action == USB_DEVICE_ADD) {
-        char manufacturer[256], product[256], serial[256], size[16];
-        char buf[256];
-        int result;
+        char manufacturer[256], product[256], serial[256];
 
         strcpy(manufacturer, usb_dev->manufacturer);
         strcpy(product, usb_dev->product);
@@ -25,18 +21,6 @@ static int notify_device(struct notifier_block *self, unsigned long action, void
     return NOTIFY_OK;
 }
 
-static struct notifier_block usb_notifier = {
+struct notifier_block usb_notifier = {
     .notifier_call = notify_device,
 };
-
-static int __init usb_notify_init(void) {
-    usb_register_notify(&usb_notifier);
-    return 0;
-}
-
-static void __exit usb_notify_exit(void) {
-    usb_unregister_notify(&usb_notifier);
-}
-
-module_init(usb_notify_init);
-module_exit(usb_notify_exit);
