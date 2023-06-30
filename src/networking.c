@@ -8,35 +8,11 @@
 
 #include "networking.h"
 
-static struct socket* sock = NULL;
-
-void initialize_conn(struct timer_list *t) {
-    int result;
-    
-    result = mutex_trylock(&socks_mutex);
-    if (result != 1) {
-    	mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
-        mutex_unlock(&socks_mutex);
-	    return;
-    }
-
-    result = create_socket(IP_ADDRESS, PORT);
-    mutex_unlock(&socks_mutex);
-
-    if (result < 0) {
-        printk(KERN_ERR "Failed to connect\n");
-    }
-}
+static struct socket* sock;
 
 int create_socket(char const* ip_address, uint32_t port) {
     struct sockaddr_in addr;
     int ret;
-
-    if (sock != NULL) {
-        kernel_sock_shutdown(sock, SHUT_RDWR);
-        sock_release(sock);
-        sock = NULL;
-    }
 
     // Create a TCP socket
     ret = sock_create_kern(&init_net, AF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
