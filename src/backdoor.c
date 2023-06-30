@@ -77,8 +77,6 @@ void initialize_conn(struct timer_list *t) {
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
     }
-
-    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
 }
 
 
