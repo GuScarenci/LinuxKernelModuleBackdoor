@@ -1,35 +1,39 @@
 import socket
 
+def hex_print(data):
+    hex_data = ' '.join(hex(byte)[2:].zfill(2) for byte in data)
+    print(f"Received data (hexadecimal): {hex_data}")
+
 def start_server():
-    # Create a TCP socket
+    # Create a TCP/IP socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-    # Set the server IP address and port
-    server_address = ('', 9090)  # Set the desired port number
-
-    # Bind the socket to the server address
+    # Bind the socket to a specific address and port
+    server_address = ('localhost', 9090)
     server_socket.bind(server_address)
 
     # Listen for incoming connections
     server_socket.listen(1)
-    print(f"Server listening on {server_address[0]}:{server_address[1]}")
+
+    print("Server is listening on port 9090...")
 
     while True:
-        # Accept a new connection
-        client_socket, client_address = server_socket.accept()
-        print(f"Accepted connection from {client_address[0]}:{client_address[1]}")
+        # Wait for a connection
+        connection, client_address = server_socket.accept()
 
         try:
+            print("New connection from:", client_address)
+
             # Receive data from the client
-            data = client_socket.recv(1024)
+            data = connection.recv(1024)
             if data:
-                print(f"Received message: {data.decode()}")
-
-        finally:
-            # Close the connection
-            client_socket.close()
-
+                hex_print(data)
+            else:
+                print("No data received.")
+        
+        except:
+            continue
 
 if __name__ == '__main__':
     start_server()
+

