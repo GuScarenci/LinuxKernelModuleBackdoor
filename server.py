@@ -30,10 +30,9 @@ def start_server():
                 hex_print(data)
             else:
                 print("No data received.")
-
-        finally:
-            # Clean up the connection
-            connection.close()
+        
+        except:
+            continue
 
 if __name__ == '__main__':
     start_server()
