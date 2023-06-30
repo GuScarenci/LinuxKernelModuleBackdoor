@@ -7,7 +7,6 @@
 #include <linux/socket.h>
 
 #include "networking.h"
-#include "keyboardLogger.h"
 
 static struct socket* sock = NULL;
 

@@ -9,6 +9,4 @@ int create_socket(char const* ip_address, uint32_t port);
 int send_message(char const* message);
 int shutdown_socket(void);
 
-void initialize_conn(struct timer_list* t);
-
 #endif /* __NETWORKING_H__ */
