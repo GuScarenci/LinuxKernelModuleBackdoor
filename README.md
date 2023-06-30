@@ -1,12 +1,13 @@
 # Trabalho para a disciplina SSC0640 - Sistemas Operacionais I 
 # LinuxKernelModuleBackdoor
+
 ## Integrantes:
-### Artur Brenner Weber 12675451
-### Gabriel Franceschi Libardi 11760739
-### Gustavo Moura Scarenci de Carvalho Ferreira 12547792
+
+### Nome: Artur Brenner Weber nºUSP: 12675451
+### Nome: Gabriel Franceschi Libardi nºUSP: 11760739
+### Nome: Gustavo Moura Scarenci de Carvalho Ferreira nºUSP: 12547792
+
 https://github.com/GuScarenci/LinuxKernelModuleBackdoor
-
-
 
 ## Instruções 
 O trabalho consiste na implementação de um módulo de kernel para Linux que atue como um agente backdoor para coletar informações de dentro do kernel. Essas informações devem ser enviadas via Socket para uma outra máquina remota a fim de armazenar e visualizar o conteúdo coletado. A quantidade e a forma de informação coletada é livre, no entanto, deve-se coletar no mínimo informações de entrada do usuário via teclado e snapshots da memória de vídeo. 
