@@ -1,5 +1,9 @@
-#Trabalho para a disciplina SSC0640 - Sistemas Operacionais I 
-#LinuxKernelModuleBackdoor
+# Trabalho para a disciplina SSC0640 - Sistemas Operacionais I 
+# LinuxKernelModuleBackdoor
+## Integrantes:
+### Artur Brenner Weber 12675451
+### Gabriel Franceschi Libardi 11760739
+### Gustavo Moura Scarenci de Carvalho Ferreira 12547792
 https://github.com/GuScarenci/LinuxKernelModuleBackdoor
 
 
