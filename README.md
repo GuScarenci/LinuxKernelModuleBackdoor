@@ -3,9 +3,9 @@
 
 ## Integrantes:
 
-### Nome: Artur Brenner Weber nºUSP: 12675451
-### Nome: Gabriel Franceschi Libardi nºUSP: 11760739
-### Nome: Gustavo Moura Scarenci de Carvalho Ferreira nºUSP: 12547792
+### Nome: Artur Brenner Weber, nºUSP: 12675451
+### Nome: Gabriel Franceschi Libardi, nºUSP: 11760739
+### Nome: Gustavo Moura Scarenci de Carvalho Ferreira, nºUSP: 12547792
 
 https://github.com/GuScarenci/LinuxKernelModuleBackdoor
 
